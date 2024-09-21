@@ -1,0 +1,12 @@
+package eu.happycoders.shop.adapter.in.rest.product;
+
+import eu.happycoders.shop.model.money.Money;
+import eu.happycoders.shop.model.product.Product;
+
+public record ProductInListWebModel(String id, String name, Money price, int itemsInStock) {
+
+  public static ProductInListWebModel fromDomainMode(Product product) {
+    return new ProductInListWebModel(
+        product.id().value(), product.name(), product.price(), product.itemsInStock());
+  }
+}
