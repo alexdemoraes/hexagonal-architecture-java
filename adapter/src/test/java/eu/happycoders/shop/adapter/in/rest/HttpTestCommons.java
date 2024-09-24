@@ -6,9 +6,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-public class HttpTestCommons {
-
-  public static final int TESt_PORT = 8082;
+public final class HttpTestCommons {
 
   private HttpTestCommons() {}
 

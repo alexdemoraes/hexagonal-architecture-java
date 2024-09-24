@@ -12,11 +12,6 @@ public class TestProductFactory {
 
   public static Product createTestProduct(Money price, int itemsInStock) {
     return new Product(
-        ProductId.randomProductId(),
-        "any name",
-        "any description",
-        price,
-        itemsInStock
-    );
+        ProductId.randomProductId(), "any name", "any description", price, itemsInStock);
   }
 }

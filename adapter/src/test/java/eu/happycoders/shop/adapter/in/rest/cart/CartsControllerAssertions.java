@@ -30,8 +30,7 @@ public class CartsControllerAssertions {
           .isEqualTo(lineItem.product().price().currency().getCurrencyCode());
       assertThat(json.getDouble(lineItemPrefix + "price.amount"))
           .isEqualTo(lineItem.product().price().amount().doubleValue());
-      assertThat(json.getInt(lineItemPrefix + "quantity"))
-          .isEqualTo(lineItem.quantity());
+      assertThat(json.getInt(lineItemPrefix + "quantity")).isEqualTo(lineItem.quantity());
     }
 
     assertThat(json.getInt("numberOfItems")).isEqualTo(cart.numberOfItems());
@@ -45,6 +44,4 @@ public class CartsControllerAssertions {
       assertThat(json.getString("subTotal")).isNull();
     }
   }
-
-
 }

@@ -1,6 +1,6 @@
 package eu.happycoders.shop.adapter.out.persistence.inmemory;
 
-import eu.happycoders.shop.adapter.out.persistence.inmemory.DemoProducts;
+import eu.happycoders.shop.adapter.out.persistence.DemoProducts;
 import eu.happycoders.shop.application.port.out.persistence.ProductRepository;
 import eu.happycoders.shop.model.product.Product;
 import eu.happycoders.shop.model.product.ProductId;

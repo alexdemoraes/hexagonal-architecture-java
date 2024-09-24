@@ -1,6 +1,5 @@
 package eu.happycoders.shop.application.port.out.persistence;
 
-import eu.happycoders.shop.model.cart.Cart;
 import eu.happycoders.shop.model.product.Product;
 import eu.happycoders.shop.model.product.ProductId;
 import java.util.List;

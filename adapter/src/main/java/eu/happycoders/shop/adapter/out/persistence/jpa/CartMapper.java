@@ -5,7 +5,7 @@ import eu.happycoders.shop.model.cart.CartLineItem;
 import eu.happycoders.shop.model.customer.CustomerId;
 import java.util.Optional;
 
-public class CartMapper {
+final class CartMapper {
 
   private CartMapper() {}
 
@@ -13,7 +13,8 @@ public class CartMapper {
     var cartJpaEntity = new CartJpaEntity();
     cartJpaEntity.setCustomerId(cart.id().value());
 
-    cartJpaEntity.setLineItems(cart.lineItems().stream().map(lineItem -> toJpaEntity(cartJpaEntity, lineItem)).toList());
+    cartJpaEntity.setLineItems(
+        cart.lineItems().stream().map(lineItem -> toJpaEntity(cartJpaEntity, lineItem)).toList());
 
     return cartJpaEntity;
   }

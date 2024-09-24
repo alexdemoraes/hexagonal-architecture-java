@@ -1,4 +1,4 @@
-package eu.happycoders.shop.adapter.out.persistence.inmemory;
+package eu.happycoders.shop.adapter.out.persistence;
 
 import eu.happycoders.shop.model.money.Money;
 import eu.happycoders.shop.model.product.Product;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public final class DemoProducts {
 
-  public static final Currency EUR = Currency.getInstance("EUR");
+  private static final Currency EUR = Currency.getInstance("EUR");
 
   public static final Product PLASTIC_SHEETING =
       new Product(

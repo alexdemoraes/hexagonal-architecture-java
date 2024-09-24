@@ -10,8 +10,7 @@ import jakarta.ws.rs.core.Response;
  */
 public final class ControllerCommons {
 
-  private ControllerCommons() {
-  }
+  private ControllerCommons() {}
 
   public static ClientErrorException clientErrorException(Response.Status status, String message) {
     return new ClientErrorException(errorResponse(status, message));

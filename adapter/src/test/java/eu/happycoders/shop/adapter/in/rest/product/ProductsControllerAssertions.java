@@ -8,7 +8,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.util.List;
 
-public class ProductsControllerAssertions {
+public final class ProductsControllerAssertions {
 
   private ProductsControllerAssertions() {}
 
@@ -25,15 +25,15 @@ public class ProductsControllerAssertions {
 
     JsonPath json = response.jsonPath();
 
-    for(int i = 0; i < products.size(); i++) {
+    for (int i = 0; i < products.size(); i++) {
       String prefix = "[%d].".formatted(i);
       Product product = products.get(i);
       assertThatJsonProductMatchesProduct(json, false, prefix, product);
     }
-
   }
 
-  static void assertThatJsonProductMatchesProduct(JsonPath json, boolean jsonHasDescription, String prefix, Product product) {
+  static void assertThatJsonProductMatchesProduct(
+      JsonPath json, boolean jsonHasDescription, String prefix, Product product) {
     assertThat(json.getString(prefix + "id")).isEqualTo(product.id().value());
     assertThat(json.getString(prefix + "name")).isEqualTo(product.name());
 
@@ -43,8 +43,10 @@ public class ProductsControllerAssertions {
       assertThat(json.getString(prefix + "description")).isNull();
     }
 
-    assertThat(json.getString(prefix + "price.currency")).isEqualTo(product.price().currency().getCurrencyCode());
-    assertThat(json.getDouble(prefix + "price.amount")).isEqualTo(product.price().amount().doubleValue());
+    assertThat(json.getString(prefix + "price.currency"))
+        .isEqualTo(product.price().currency().getCurrencyCode());
+    assertThat(json.getDouble(prefix + "price.amount"))
+        .isEqualTo(product.price().amount().doubleValue());
 
     assertThat(json.getInt(prefix + "itemsInStock")).isEqualTo(product.itemsInStock());
   }

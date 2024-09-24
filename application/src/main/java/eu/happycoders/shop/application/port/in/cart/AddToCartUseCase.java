@@ -7,6 +7,5 @@ import eu.happycoders.shop.model.product.ProductId;
 
 public interface AddToCartUseCase {
   Cart addToCart(CustomerId customerId, ProductId productId, int quantity)
-    throws ProductNotFoundException, NotEnoughItemsInStockException;
-
+      throws ProductNotFoundException, NotEnoughItemsInStockException;
 }

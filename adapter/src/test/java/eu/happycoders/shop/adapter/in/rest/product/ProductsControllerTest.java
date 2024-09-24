@@ -17,7 +17,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-public class ProductsControllerTest {
+class ProductsControllerTest {
 
   private static final Product TEST_PRODUCT_1 = createTestProduct(euros(19, 99));
   private static final Product TEST_PRODUCT_2 = createTestProduct(euros(25, 99));

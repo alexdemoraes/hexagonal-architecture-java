@@ -5,6 +5,9 @@ import static eu.happycoders.shop.adapter.in.rest.cart.CartsControllerAssertions
 import static eu.happycoders.shop.model.money.TestMoneyFactory.euros;
 import static eu.happycoders.shop.model.product.TestProductFactory.createTestProduct;
 import static io.restassured.RestAssured.given;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.NO_CONTENT;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import eu.happycoders.shop.application.port.in.cart.AddToCartUseCase;
@@ -19,15 +22,14 @@ import eu.happycoders.shop.model.product.ProductId;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
-import jakarta.ws.rs.core.Response.Status;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class CartsControllerTest {
 
-  public static final CustomerId TEST_CUSTOMER_ID = new CustomerId(61157);
-  public static final Product TEST_PRODUCT_1 = createTestProduct(euros(19, 99));
-  public static final Product TEST_PRODUCT_2 = createTestProduct(euros(25, 99));
+  private static final CustomerId TEST_CUSTOMER_ID = new CustomerId(61157);
+  private static final Product TEST_PRODUCT_1 = createTestProduct(euros(19, 99));
+  private static final Product TEST_PRODUCT_2 = createTestProduct(euros(25, 99));
 
   @InjectMock AddToCartUseCase addToCartUseCase;
   @InjectMock GetCartUseCase getCartUseCase;
@@ -39,7 +41,7 @@ class CartsControllerTest {
 
     Response response = given().get("/carts/" + customerId).then().extract().response();
 
-    assertThatResponseIsError(response, Status.BAD_REQUEST, "Invalid 'customerId'");
+    assertThatResponseIsError(response, BAD_REQUEST, "Invalid 'customerId'");
   }
 
   @Test
@@ -100,7 +102,29 @@ class CartsControllerTest {
             .extract()
             .response();
 
-    assertThatResponseIsError(response, Status.BAD_REQUEST, "Invalid 'productId'");
+    assertThatResponseIsError(response, BAD_REQUEST, "Invalid 'productId'");
+  }
+
+  @Test
+  void givenProductNotFound_addLineItem_returnsAnError()
+      throws NotEnoughItemsInStockException, ProductNotFoundException {
+    CustomerId customerId = TEST_CUSTOMER_ID;
+    ProductId productId = ProductId.randomProductId();
+    int quantity = 5;
+
+    when(addToCartUseCase.addToCart(customerId, productId, quantity))
+        .thenThrow(new ProductNotFoundException());
+
+    Response response =
+        given()
+            .queryParam("productId", productId.value())
+            .queryParam("quantity", quantity)
+            .post("/carts/" + customerId.value() + "/line-items")
+            .then()
+            .extract()
+            .response();
+
+    assertThatResponseIsError(response, BAD_REQUEST, "The requested product does not exist");
   }
 
   @Test
@@ -113,6 +137,24 @@ class CartsControllerTest {
     when(addToCartUseCase.addToCart(customerId, productId, quantity))
         .thenThrow(new NotEnoughItemsInStockException("Not enough items in stock", 2));
 
+    Response response =
+        given()
+            .queryParam("productId", productId.value())
+            .queryParam("quantity", quantity)
+            .post("/carts/%d/line-items".formatted(customerId.value()))
+            .then()
+            .extract()
+            .response();
 
+    assertThatResponseIsError(response, BAD_REQUEST, "Only 2 items in stock");
+  }
+
+  @Test
+  void givenACustomerId_deleteCart_invokesDeleteCartUseCaseAndReturnsUpdatedCart() {
+    CustomerId customerId = TEST_CUSTOMER_ID;
+
+    given().delete("/carts/" + customerId.value()).then().statusCode(NO_CONTENT.getStatusCode());
+
+    verify(emptyCartUseCase).emptyCart(customerId);
   }
 }

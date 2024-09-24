@@ -9,7 +9,7 @@ public record ProductId(String value) {
   private static final int LENGTH_OF_NEW_PRODUCT_IDS = 8;
 
   public ProductId {
-    Objects.requireNonNull(value, "'value must nome be null'");
+    Objects.requireNonNull(value, "'value' must nome be null'");
     if (value.isEmpty()) {
       throw new IllegalArgumentException("'value' must not be empty");
     }
@@ -23,5 +23,4 @@ public record ProductId(String value) {
     }
     return new ProductId(new String(chars));
   }
-
 }

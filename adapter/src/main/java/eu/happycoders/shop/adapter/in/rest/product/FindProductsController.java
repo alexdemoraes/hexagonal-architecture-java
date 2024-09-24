@@ -35,6 +35,6 @@ public class FindProductsController {
       throw clientErrorException(Status.BAD_REQUEST, "Invalid 'query'");
     }
 
-    return products.stream().map(ProductInListWebModel::fromDomainMode).toList();
+    return products.stream().map(ProductInListWebModel::fromDomainModel).toList();
   }
 }
