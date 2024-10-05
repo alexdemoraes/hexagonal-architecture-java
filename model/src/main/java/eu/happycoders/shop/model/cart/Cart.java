@@ -11,12 +11,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * A shopping cart of a particular customer, containing several line items.
+ *
+ * @author Sven Woltmann
+ */
 @Accessors(fluent = true)
 @RequiredArgsConstructor
 public class Cart {
 
-  @Getter
-  private final CustomerId id;
+  @Getter private final CustomerId id;
 
   private final Map<ProductId, CartLineItem> lineItems = new LinkedHashMap<>();
 
@@ -26,24 +30,15 @@ public class Cart {
         .increaseQuantityBy(quantity, product.itemsInStock());
   }
 
-  // Use only for reconstituting a Cart entity from the database
-  public void putProductIgnoringNotEnoughItemsInStock(Product product, int quantity) {
-    lineItems.put(product.id(), new CartLineItem(product, quantity));
-  }
-
   public List<CartLineItem> lineItems() {
     return List.copyOf(lineItems.values());
   }
 
   public int numberOfItems() {
-    return lineItems.values().stream()
-        .mapToInt(CartLineItem::quantity).sum();
+    return lineItems.values().stream().mapToInt(CartLineItem::quantity).sum();
   }
 
   public Money subTotal() {
-    return lineItems.values().stream()
-        .map(CartLineItem::subTotal)
-        .reduce(Money::add)
-        .orElse(null);
+    return lineItems.values().stream().map(CartLineItem::subTotal).reduce(Money::add).orElse(null);
   }
 }

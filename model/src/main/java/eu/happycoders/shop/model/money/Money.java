@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Objects;
 
+/**
+ * A money value object consisting of a currency and an amount.
+ *
+ * @author Sven Woltmann
+ */
 public record Money(Currency currency, BigDecimal amount) {
 
   public Money {
@@ -25,8 +30,7 @@ public record Money(Currency currency, BigDecimal amount) {
     if (!this.currency.equals(augend.currency())) {
       throw new IllegalArgumentException(
           "Currency %s of augend does not match this money's currency %s"
-              .formatted(augend.currency, this.currency)
-              );
+              .formatted(augend.currency, this.currency));
     }
 
     return new Money(currency, amount.add(augend.amount));

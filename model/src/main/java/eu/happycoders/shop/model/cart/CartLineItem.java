@@ -7,11 +7,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+/**
+ * A shopping cart line item with a product and quantity.
+ *
+ * @author Sven Woltmann
+ */
 @Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class CartLineItem {
+
   private final Product product;
   private int quantity;
 
